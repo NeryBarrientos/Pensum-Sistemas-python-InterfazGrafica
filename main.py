@@ -1,8 +1,8 @@
+from tkinter import messagebox
 from ttkthemes import ThemedTk
 import tkinter
 from tkinter import *
 from tkinter import ttk
-from tkinter import messagebox
 import easygui as eg
 import functools
 import tkinter as tk
@@ -20,12 +20,14 @@ def cargar():
     global probando,codigos,codigosBien
     imprimir = '*********************************************'
     imprimir1 = 'Archivo Cargado exitosamente'
+    imprimir2 = 'Archivo no seleccionado, vuelva a intentarlo'
     extension = ["*.py","*.pyc"]
     archivo = eg.fileopenbox(msg="Abrir archivo",
                          title="Control: fileopenbox",
-                         default='C:/Users/USUARIO/Desktop/*lfp',
-                         filetypes=extension)                      
-    eg.msgbox('Ruta del Archivo: ' + archivo + '\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ') + '\n' + imprimir.center(75,' ') + '\n' , "fileopenbox", ok_button="Continuar")
+                         default='C:/Users/neri_/OneDrive/Escritorio/*lfp',
+                         filetypes=extension)
+    mensaje = 'Ruta del Archivo: ' + str(archivo) + '\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ') + '\n' + imprimir.center(75,' ') + '\n'
+    messagebox.showinfo(message=mensaje,title="Mensaje")
     f = open(archivo,'r',encoding="utf8")
     for linea in f:
         temporal = []
@@ -75,7 +77,6 @@ def cargar():
                 arbol.insert("",END,text=element[0],values=(element[1],element[2],element[3],element[4],element[5],element[6]),iid=element[0])
     for element in probando:
         codigosBien.append(element[0])
-
 
 def ventana_secundaria(master, callback=None, args=(), kwargs={}):
     if callback is not None:
@@ -182,7 +183,6 @@ def mostrar_Conteo():
     mostrarCurso.pack_forget()
     conteo.pack(side="top", fill="both", expand=True)
 
-
 def ventana_tercera(master, callback=None, args=(), kwargs={}):
     global arbol
     if callback is not None:
@@ -219,7 +219,7 @@ def ventana_tercera(master, callback=None, args=(), kwargs={}):
 
 def ObtenerEntry():
     global probando, arbol,codigos,codigosBien
-    print(codigosBien)
+    #print(codigosBien)
     imprimir = '*********************************************'
     imprimir1 = 'Dato Opcionalidad fuera de rango'
     imprimir2 = 'Dato estado fuera de rango'
@@ -232,7 +232,7 @@ def ObtenerEntry():
     elif opcionalidad.get() == 0:
         temporal = "Opcional"
     else:
-        eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '))
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
         correcto = False        
     if estado.get() == 0:
         temporal1 = "Aprobado"
@@ -241,13 +241,13 @@ def ObtenerEntry():
     elif estado.get() == -1:
         temporal1 = "Pendiente"
     else:
-        eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir2.center(75,' ')+ '\n' + imprimir.center(75,' '))
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir2.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
         correcto = False
     if semestre.get() >=1 and semestre.get() <=10:
         prueba = ''
     else:
         correcto = False
-        eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir4.center(75,' ')+ '\n' + imprimir.center(75,' '))
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir4.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
     temp = [codigo.get()] + [nombre.get()] + [requisito.get()] + [semestre.get()] + [temporal] + [creditos.get()] + [temporal1]
     if correcto == True:
         if len(probando) == 0:
@@ -261,17 +261,17 @@ def ObtenerEntry():
                     arbol.delete(str(codigo.get()))
                     probando.append(temp)
                     arbol.insert("",END,text=codigo.get(),values=(nombre.get(),requisito.get(),temporal,semestre.get(),creditos.get(),temporal1),iid=codigo.get())
-                    eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir5.center(75,' ') + '\n' + imprimir.center(75,' ') + '\n' , "fileopenbox", ok_button="Continuar")
+                    messagebox.showwarning(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir5.center(75,' ') + '\n' + imprimir.center(75,' '),title="Advertencia")
                 else:
                     probando.append(temp)
                     codigosBien.append(str(codigo.get()))
                     arbol.insert("",END,text=codigo.get(),values=(nombre.get(),requisito.get(),temporal,semestre.get(),creditos.get(),temporal1),iid=codigo.get())
-                    eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' ') + '\n' , "fileopenbox", ok_button="Continuar")
+                    messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
             except ValueError:
                 probando.append(temp)
                 codigosBien.append(str(codigo.get()))
                 arbol.insert("",END,text=codigo.get(),values=(nombre.get(),requisito.get(),temporal,semestre.get(),creditos.get(),temporal1),iid=codigo.get())
-                eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' ') + '\n' , "fileopenbox", ok_button="Continuar")
+                messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
 
 def ventana_agregar(master, callback=None, args=(), kwargs={}):
     global arbol,codigo,nombre,requisito,semestre,opcionalidad,creditos,estado
@@ -358,32 +358,62 @@ def editarCurso():
     imprimir = '*********************************************'
     imprimir1 = 'Dato Opcionalidad fuera de rango'
     imprimir2 = 'Dato estado fuera de rango'
-    imprimir3 = 'Curso Editado Correctamente'
-    if opcionalidadEditar.get() < 0 or opcionalidadEditar.get() > 1:
-        eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '))
+    imprimir3 = 'Curso editado Correctamente'
+    imprimir4 = 'Dato semestre fuera de rango'
+    correcto = True
+    comboSeleccionado = combo.get()
     if opcionalidadEditar.get() == 1:
         temporal = "Obligatorio"
     elif opcionalidadEditar.get() == 0:
         temporal = "Opcional"
-    if estadoEditar.get() < -1 or estadoEditar.get() > 1:
-        eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir2.center(75,' ')+ '\n' + imprimir.center(75,' '))
+    else:
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
+        correcto = False        
     if estadoEditar.get() == 0:
         temporal1 = "Aprobado"
     elif estadoEditar.get() == 1:
         temporal1 = "Cursando"
     elif estadoEditar.get() == -1:
         temporal1 = "Pendiente"
-    comboSeleccionado = combo.get()
-    for elemento in probando:
-        if elemento[0] == comboSeleccionado:
-            arbol.item(elemento[0],text=elemento[0],values=(nombreEditar.get(),requisitoEditar.get(),temporal,semestreEditar.get(),creditosEditar.get(),temporal1))
-            elemento[1] = nombreEditar.get()
-            elemento[2] = requisitoEditar.get()
-            elemento[3] = temporal
-            elemento[4] = semestreEditar.get()
-            elemento[5] = creditosEditar.get()
-            elemento[6] = temporal1
-    eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ')+ '\n' + imprimir.center(75,' '))
+    else:
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir2.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
+        correcto = False
+    if semestreEditar.get() >=1 and semestreEditar.get() <=10:
+        prueba = ''
+    else:
+        correcto = False
+        messagebox.showerror(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir4.center(75,' ')+ '\n' + imprimir.center(75,' '),title="Error")
+    temp = [codigoeditar.get()] + [nombreEditar.get()] + [requisitoEditar.get()] + [semestreEditar.get()] + [temporal] + [creditosEditar.get()] + [temporal1]
+    if correcto == True:
+        if len(probando) == 0:
+            probando.append(temp)
+            codigosBien.append(str(codigoeditar.get()))
+        else:
+            try:
+                if str(comboSeleccionado) in codigosBien:
+                    #print(f"Lo encontre {comboSeleccionado}")
+                    #print(codigosBien)
+                    poscodigo = codigosBien.index(str(comboSeleccionado))
+                    #print(poscodigo)
+                    probando[poscodigo][0] = codigoeditar.get()
+                    probando[poscodigo][1] = nombreEditar.get()
+                    probando[poscodigo][2] = requisitoEditar.get()
+                    probando[poscodigo][3] = temporal
+                    probando[poscodigo][4] = semestreEditar.get()
+                    probando[poscodigo][5] = creditosEditar.get()
+                    probando[poscodigo][6] = temporal1
+                    codigosBien[poscodigo] = codigoeditar.get()
+                    arbol.insert("",END,text=codigoeditar.get(),values=(nombreEditar.get(),requisitoEditar.get(),temporal,semestreEditar.get(),creditosEditar.get(),temporal1),iid=codigoeditar.get())
+                    indexanterior = arbol.index(comboSeleccionado)
+                    indexactual = arbol.index(codigoeditar.get())
+                    arbol.move(comboSeleccionado,"",index=indexactual)
+                    arbol.move(codigoeditar.get(),"",indexanterior)
+                    arbol.delete(comboSeleccionado)
+                    messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
+                else:
+                    messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
+            except ValueError:
+                messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir3.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
 
 def eliminarCurso():
     global probando,arbol
@@ -392,10 +422,11 @@ def eliminarCurso():
     comboSeleccionado = comboEliminar.get()
     for elemento in range(len(probando)):
         if probando[elemento][1] == comboSeleccionado:
-            print(f"Lo encontre: {probando[elemento]}")
+            #print(f"Lo encontre: {probando[elemento]}")
             arbol.delete(probando[elemento][0])
             probando.pop(elemento)
-    eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '))
+            break
+    messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
 
 def mostrarCursoBoton():
     global probando,arbol
@@ -405,7 +436,8 @@ def mostrarCursoBoton():
     #Entry box
     campoCodigo = Entry(frameMostrarCurso,font=('Arial',12),justify=CENTER)
     campoCodigo.place(x=600,y=80,width=200,height=50)
-    campoCodigo.insert(END,comboSeleccionado)
+    campoCodigo.insert("0",comboSeleccionado)
+    campoCodigo.config(state="readonly")
 
     campoNombre = ttk.Entry(frameMostrarCurso,font=('Arial',12),justify=CENTER)
     campoNombre.place(x=600,y=150,width=200,height=50)
@@ -427,24 +459,31 @@ def mostrarCursoBoton():
     #Dar valores a los entry
     for dato in probando:
         if dato[0] == comboSeleccionado:
-            print(dato[0])
-            campoNombre.insert(END,dato[1])
-            campoRequisito.insert(END,dato[2])
-            campoSemestre.insert(END,dato[4])
-            campoOpcionalidad.insert(END,dato[3])
-            campoCreditos.insert(END,dato[5])
-            campoEstado.insert(END,dato[6])
+            #print(dato[0])
+            campoNombre.insert("0",dato[1])
+            campoRequisito.insert("0",dato[2])
+            campoSemestre.insert("0",dato[4])
+            campoOpcionalidad.insert("0",dato[3])
+            campoCreditos.insert("0",dato[5])
+            campoEstado.insert("0",dato[6])
+    campoNombre.config(state="readonly")
+    campoRequisito.config(state="readonly")
+    campoSemestre.config(state="readonly")
+    campoOpcionalidad.config(state="readonly")
+    campoCreditos.config(state="readonly")
+    campoEstado.config(state="readonly")
     #Mensaje curso mostrado
-    eg.msgbox('\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ')+ '\n' + imprimir.center(75,' '))
+    messagebox.showinfo(message='\n\n\n\n\n' + imprimir.center(75,' ') + '\n' + imprimir1.center(75,' ') + '\n' + imprimir.center(75,' '),title="Mensaje")
 
 def ventana_editar(master, callback=None, args=(), kwargs={}):
-    global arbol,probando,prueba,nombreEditar,requisitoEditar,semestreEditar,opcionalidadEditar,creditosEditar,estadoEditar
+    global arbol,probando,prueba,nombreEditar,requisitoEditar,semestreEditar,opcionalidadEditar,creditosEditar,estadoEditar,codigoeditar
     if callback is not None:
         callback = functools.partial(callback, *args, **kwargs)
     prueba = tk.Frame(master)
     label = Label(prueba,text="Editar Curso")
     label.place(x=630,y=10)
     #saveEntry
+    codigoeditar = tk.StringVar()
     nombreEditar = tk.StringVar()
     requisitoEditar = tk.StringVar()
     semestreEditar = tk.IntVar()
@@ -452,6 +491,7 @@ def ventana_editar(master, callback=None, args=(), kwargs={}):
     creditosEditar = tk.IntVar()
     estadoEditar = tk.IntVar()
     #Entry box
+    campoCodigo = ttk.Entry(prueba,font=('Arial',12),textvariable=codigoeditar).place(x=600,y=80,width=200,height=50)
     campoNombre = ttk.Entry(prueba,font=('Arial',12),textvariable=nombreEditar).place(x=600,y=150,width=200,height=50)
     campoRequisito = ttk.Entry(prueba,font=('Arial',12),textvariable=requisitoEditar).place(x=600,y=220,width=200,height=50)
     campoSemestre = ttk.Entry(prueba,font=('Arial',12),textvariable=semestreEditar).place(x=600,y=290,width=200,height=50)
@@ -460,6 +500,7 @@ def ventana_editar(master, callback=None, args=(), kwargs={}):
     campoEstado = ttk.Entry(prueba,font=('Arial',12),textvariable=estadoEditar).place(x=600,y=500,width=200,height=50)
     #labels
     labelCursoEditar = Label(prueba,text="Curso a Editar",font=('Arial',11)).place(x=500,y=30,height=30)
+    labelEditar = Label(prueba,text="Codigo",font=('Arial',12)).place(x=500,y=80,height=50)
     labelNombre = Label(prueba,text="Nombre",font=('Arial',12)).place(x=500,y=150,height=50)
     labelRequisito = Label(prueba,text="Pre requisito",font=('Arial',12)).place(x=500,y=220,height=50)
     labelSemestre = Label(prueba,text="Semestre",font=('Arial',12)).place(x=500,y=290,height=50)
@@ -496,40 +537,55 @@ def creditosAprobados():
     for dato in probando:
         if dato[6] == "Aprobado":
             suma += int(dato[5])
-    campoCreditosA.insert(END,suma)
+    campoCreditosA = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosA.place(x=600,y=50,width=100,height=20)
+    campoCreditosA.insert("0",suma)
+    campoCreditosA.config(state="readonly")
 
 def creditosCursando():
     suma = 0
     for dato in probando:
         if dato[6] == "Cursando":
             suma += int(dato[5])
-    campoCreditosC.insert(END,suma)
+    campoCreditosC = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosC.place(x=600,y=80,width=100,height=20)
+    campoCreditosC.insert("0",suma)
+    campoCreditosC.config(state="readonly")
 
 def creditosPendiente():
     suma = 0
     for dato in probando:
         if dato[6] == "Pendiente":
             suma += int(dato[5])
-    campoCreditosP.insert(END,suma)
+    campoCreditosP = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosP.place(x=600,y=110,width=100,height=20)
+    campoCreditosP.insert("0",suma)
+    campoCreditosP.config(state="readonly")
 
 def creditosobligatorios():
     suma = 0
-    opcionseleccionada = combo.get()
+    opcionseleccionada = comboO.get()
     for dato in probando:
         if int(dato[4]) <= int(opcionseleccionada) and dato[3] == "Obligatorio":
             suma += int(dato[5])
-    campoCreditosO.insert(END,suma)
+    campoCreditosO = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosO.place(x=700,y=140,width=100,height=20)
+    campoCreditosO.insert("0",suma)
+    campoCreditosO.config(state="readonly")
 
 def creditosSemestre():
     suma = 0
-    opcionseleccionada = combo.get()
+    opcionseleccionada = combo1.get()
     for dato in probando:
         if int(dato[4]) == int(opcionseleccionada):
             suma += int(dato[5])
-    campoCreditosS.insert(END,suma)
+    campoCreditosS = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosS.place(x=580,y=210,width=100,height=20)
+    campoCreditosS.insert("0",suma)
+    campoCreditosS.config(state="readonly")
 
 def ventana_Conteo(master, callback=None, args=(), kwargs={}):
-    global arbol,frameConteo,campoCreditosA,campoCreditosC,campoCreditosP,combo,campoCreditosO,campoCreditosS
+    global arbol,frameConteo,campoCreditosA,campoCreditosC,campoCreditosP,comboO,combo1,campoCreditosO,campoCreditosS
     if callback is not None:
         callback = functools.partial(callback, *args, **kwargs)
     frameConteo = tk.Frame(master)
@@ -542,19 +598,19 @@ def ventana_Conteo(master, callback=None, args=(), kwargs={}):
     labelcreditosObligatorios = Label(frameConteo,text="Creditos obligatorios hasta semestre N:",font=('Arial',12)).place(x=400,y=140,height=20)
     labelcreditosSemestre = Label(frameConteo,text="Creditos del semestre:",font=('Arial',12)).place(x=400,y=210,height=20)
     #Entry
-    campoCreditosA = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosA = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER,state="readonly")
     campoCreditosA.place(x=600,y=50,width=100,height=20)
-    campoCreditosC = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosC = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER,state="readonly")
     campoCreditosC.place(x=600,y=80,width=100,height=20)
-    campoCreditosP = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosP = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER,state="readonly")
     campoCreditosP.place(x=600,y=110,width=100,height=20)
-    campoCreditosO = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosO = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER,state="readonly")
     campoCreditosO.place(x=700,y=140,width=100,height=20)
-    campoCreditosS = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER)
+    campoCreditosS = ttk.Entry(frameConteo,font=('Arial',12),justify=CENTER,state="readonly")
     campoCreditosS.place(x=580,y=210,width=100,height=20)
     #botones
     boton = tkinter.Button(frameConteo, text='Regresar', width=15, height=3,command=callback,bd="4")
-    boton.place(x=600,y=600)
+    boton.place(x=600,y=580)
     botonAprobados = tkinter.Button(frameConteo, text='Mostrar', width=15, height=3,bd="4",command=creditosAprobados)
     botonAprobados.place(x=710,y=50,width=100,height=20)
     botonCursando = tkinter.Button(frameConteo, text='Mostrar', width=15, height=3,bd="4",command=creditosCursando)
@@ -567,8 +623,8 @@ def ventana_Conteo(master, callback=None, args=(), kwargs={}):
     botonCreditosS.place(x=600,y=255,width=100,height=20)
     #combo
     numeros = ["1","2","3","4","5","6","7","8","9","10"]
-    combo = ttk.Combobox(frameConteo,font=('Arial',10),state="readonly",values=numeros)
-    combo.place(x=550,y=170,width=50,height=30)
+    comboO = ttk.Combobox(frameConteo,font=('Arial',10),state="readonly",values=numeros)
+    comboO.place(x=550,y=170,width=50,height=30)
     combo1 = ttk.Combobox(frameConteo,font=('Arial',10),state="readonly",values=numeros)
     combo1.place(x=550,y=250,width=50,height=30)
     return frameConteo
@@ -589,6 +645,9 @@ def ventana_mostrarCurso(master, callback=None, args=(), kwargs={}):
     boton1 = tkinter.Button(frameMostrarCurso, text='Mostrar', width=15, height=3,bd="4",command=mostrarCursoBoton)
     boton1.place(x=520,y=580)
     return frameMostrarCurso
+
+def salir():
+    exit()
 
 #ventana = tkinter.Tk()
 #Abro venta
@@ -632,7 +691,7 @@ boton2 = tkinter.Button(miFrameV, text='Gestionar Cursos', width=15, height=3,bd
 boton2.place(x=600,y=270)
 boton3 = tkinter.Button(miFrameV, text='Conteo de Crétditos', width=15, height=3,bd="4",command=mostrar_Conteo)
 boton3.place(x=600,y=340)
-boton4 = tkinter.Button(miFrameV, text='Salir', width=15, height=3,command=exit,bd="4")
+boton4 = tkinter.Button(miFrameV, text='Salir', width=15, height=3,command=salir,bd="4")
 boton4.place(x=600,y=410)
 
 #frame Inferior
@@ -640,6 +699,3 @@ miFrame1 = Frame()
 miFrame1.pack(side="bottom",fill="x")
 miFrame1.config(width="500",height="30",relief="solid",bd="3")
 ventana.mainloop()
-
-#Logica conteo
-#Arreglar editar
